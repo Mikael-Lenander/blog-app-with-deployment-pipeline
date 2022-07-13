@@ -47,10 +47,10 @@ jobs:
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "pokedex-mikael"
+          heroku_app_name: "blogisovellus"
           heroku_email: "mikael.lenander1@gmail.com"
-          healthcheck: "https://pokedex-mikael.herokuapp.com/healthcheck"
-          checkstring: "ok 8"
+          healthcheck: "https://blogisovellus.herokuapp.com/healthcheck"
+          checkstring: "ok"
           rollbackonhealthcheckfailed: true
       
       # - name: Set node env to production
