@@ -15,12 +15,7 @@ const authRouter = require('./controllers/auth')
 
 mongoose.connect(config.DB_URI)
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
-  console.log('static')
-  app.use(express.static('build'))
-}
-
+app.use(express.static('build'))
 app.use(cors())
 app.use(express.json())
 
