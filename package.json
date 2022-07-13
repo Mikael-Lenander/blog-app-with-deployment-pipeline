@@ -8,7 +8,8 @@
     "start": "cross-env NODE_ENV=production node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "start:test": "cross-env NODE_ENV=test node src/index.js",
-    "lint": "eslint ./**/*.{js,jsx}"
+    "lint": "eslint ./**/*.{js,jsx}",
+    "start-prod": "node src/index.js"
   },
   "keywords": [],
   "author": "",
