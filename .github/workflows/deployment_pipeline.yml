@@ -41,7 +41,7 @@ jobs:
           wait-on: http://localhost:3003
           command: npm run test:e2e
           working-directory: client
-          # project: ../
+          project: ../
       
       # - name: Set node env to production
       #   uses: SpicyPizza/create-envfile@v1.3
