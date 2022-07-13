@@ -34,7 +34,7 @@ app.use('/api', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/blogs', blogRouter)
 
-app.get('healthcheck', (req, res) => {
+app.get('/healthcheck', (req, res) => {
   res.send('ok')
 })
 
