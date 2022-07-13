@@ -37,9 +37,10 @@ jobs:
       - name: e2e tests
         uses: cypress-io/github-action@v2
         with:
-          start: npm start
+          start: npm start:test
           wait-on: http://localhost:3003
-          command: cd client && npm run test:e2e
+          command: npm run test:e2e
+          working-directory: client
       
       # - name: Set node env to production
       #   uses: SpicyPizza/create-envfile@v1.3
