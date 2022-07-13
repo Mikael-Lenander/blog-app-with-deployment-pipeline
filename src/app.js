@@ -15,7 +15,9 @@ const authRouter = require('./controllers/auth')
 
 mongoose.connect(config.DB_URI)
 
+console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
+  console.log('static')
   app.use(express.static('build'))
 }
 
@@ -32,6 +34,9 @@ app.use('/api', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/blogs', blogRouter)
 
+app.get('healthcheck', (req, res) => {
+  res.send('ok')
+})
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
