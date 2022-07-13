@@ -18,8 +18,8 @@ jobs:
           node-version: '16'
       - name: npm install
         run: npm install && cd client && npm install
-      # - name: lint
-      #   run: npm run lint
+      - name: lint
+        run: npm run lint
       - name: build
         run: cd client && npm run build && mv build ..
       - name: Make envfile
@@ -30,10 +30,10 @@ jobs:
           envkey_TEST_DB_URI: ${{ secrets.TEST_DB_URI }}
           envkey_ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
           fail_on_empty: true
-      # - name: backend tests
-      #   run: npm run test
-      # - name: frontend tests
-      #   run: cd client && CI=true npm test
+      - name: backend tests
+        run: npm run test
+      - name: frontend tests
+        run: cd client && CI=true npm test
       - name: start server in the background
         run: npm run start:test &
       - name: e2e tests
@@ -42,6 +42,16 @@ jobs:
           wait-on: http://localhost:3003
           command: npm run test:e2e
           working-directory: client
+      - name: deployment
+        if: ${{ github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGES), '#skip') }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "pokedex-mikael"
+          heroku_email: "mikael.lenander1@gmail.com"
+          healthcheck: "https://pokedex-mikael.herokuapp.com/healthcheck"
+          checkstring: "ok 8"
+          rollbackonhealthcheckfailed: true
       
       # - name: Set node env to production
       #   uses: SpicyPizza/create-envfile@v1.3
