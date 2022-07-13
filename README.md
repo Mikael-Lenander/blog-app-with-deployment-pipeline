@@ -1,0 +1,1 @@
+Link to repository for exercise 11.20: https://github.com/Mikael-Lenander/blog-app-with-deployment-pipeline
