@@ -35,7 +35,7 @@ jobs:
       # - name: frontend tests
       #   run: cd client && CI=true npm test
       - name: start server in the background
-        run: npm run start:test
+        run: npm run start:test &
       - name: e2e tests
         uses: cypress-io/github-action@v2
         with:
