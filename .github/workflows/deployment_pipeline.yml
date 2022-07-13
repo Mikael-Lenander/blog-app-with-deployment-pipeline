@@ -8,6 +8,11 @@ on:
     branches: [master]
     types: [opened, synchronize]
 
+env:
+  COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+  COMMITTER: ${{ github.event.head_commit.committer.username }}
+  COMMIT_URL: ${{ github.event.head_commit.url }}
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
@@ -21,7 +26,7 @@ jobs:
       - name: lint
         run: npm run lint
       - name: build
-        run: cd client && npm run build && mv build ..
+        run: cd client && npm run build && rm -r ../build && mv build ..
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -52,9 +57,16 @@ jobs:
           healthcheck: "https://blogisovellus.herokuapp.com/healthcheck"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
-      
-      # - name: Set node env to production
-      #   uses: SpicyPizza/create-envfile@v1.3
-      #   with:
-      #     envkey_NODE_ENV: "production"
-      #     fail_on_empty: true
+
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' && !contains(join(env.COMMIT_MESSAGES), '#skip') }}
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
