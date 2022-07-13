@@ -20,3 +20,7 @@ jobs:
         run: npm install && cd client && npm install
       - name: lint
         run: npm run lint
+      - name: build
+        run: cd client && npm run build && mv build ..
+        
+      
