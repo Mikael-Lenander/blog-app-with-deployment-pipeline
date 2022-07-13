@@ -1,10 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 require('express-async-errors')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-const morgan = require('morgan')
-require('dotenv').config()
 
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
@@ -13,7 +12,6 @@ const userRouter = require('./controllers/users')
 const authRouter = require('./controllers/auth')
 
 mongoose.connect(config.DB_URI)
-morgan.token('body', function (req) { return JSON.stringify(req.body) })
 
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
   app.use(express.static('build'))
@@ -21,7 +19,12 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
 
 app.use(cors())
 app.use(express.json())
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+if (process.env.NODE_ENV === 'development') {
+  const morgan = require('morgan')
+  morgan.token('body', function (req) { return JSON.stringify(req.body) })
+  app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+}
 
 app.use('/api', authRouter)
 app.use('/api/users', userRouter)
