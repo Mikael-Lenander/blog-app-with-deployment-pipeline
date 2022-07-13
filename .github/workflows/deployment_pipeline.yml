@@ -22,5 +22,8 @@ jobs:
         run: npm run lint
       - name: build
         run: cd client && npm run build && mv build ..
-        
+      - name: backend tests
+        run: npm run test
+      - name: frontend tests
+        run: cd client && CI=true npm test
       

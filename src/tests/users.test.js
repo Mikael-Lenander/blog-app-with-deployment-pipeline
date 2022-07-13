@@ -5,6 +5,7 @@ const User = require('../models/user')
 const { initialUsers, getUsersFromDB, createUsers } = require('./test_helper').users
 
 const api = supertest(app)
+jest.setTimeout(10000)
 
 const newUser = {
   username: 'velimatti',
